@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "This Backend is for Pay With Bank Only",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShivamIT23/PayAndBank.git"
+  },
+  "author": "Shivam Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShivamIT23/PayAndBank/issues"
+  },
+  "homepage": "https://github.com/ShivamIT23/PayAndBank#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
