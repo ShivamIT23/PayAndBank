@@ -2,8 +2,10 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const z = require("zod");
-const { User } = require("../Database/db");
+const { User , Account } = require("../Database/db");
 const { JWT_Secret } = require("../config");
+const authMiddleware = require("../middleware")
+
 
 const router = express.Router();
 
@@ -43,6 +45,11 @@ router.post("/signup", async (req, res) => {
   });
 
   const userId = user._id;
+
+  const account = await Account.create({
+    userId: userId,
+    balance : 1 + Math.floor(Math.random()*100000)
+  })
 
   const token = jwt.sign(
     {
@@ -93,7 +100,7 @@ router.post("/signin", async (req, res) => {
       );
     
       return res.json({
-        message: "User created successfully",
+        message: "User Logged in successfully",
         token,
       });
 
@@ -101,5 +108,50 @@ router.post("/signin", async (req, res) => {
     return res.status(500).json({ message: "Error while logging in..." });
   }
 });
+
+const updateBody = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  password: z.string().optional()
+})
+
+router.put("/update", authMiddleware ,async (req,res)=>{
+  const {success} = updateBody.safeParse(req.body);
+  if(!success){
+    return res.status(400).json({message: "Incorrect Inputs" })
+  }
+  const user = await User.findByIdAndUpdate(req.userId, req.body, {new: true})
+  return res.json({message: "User updated successfully", user : {
+    id : user._id,
+    firstName : user.firstName,
+    lastName : user.lastName,
+    email : user.email,
+  }})
+})
+
+router.get("/bulk" , authMiddleware , async (req ,res)=> {
+  try{
+    const filter = req.query.filter;
+    const query = { _id : {$ne: req.userId}};
+
+    if(filter){
+      query.$or = [
+        {firstName : new RegExp(filter , 'i')},
+        {lastName : new RegExp(filter , 'i')}
+      ];
+    }
+
+    const users = await User.find(query);
+    return res.json({"user" : users.map(user => ({
+      id : user._id,
+      firstName : user.firstName,
+      lastName : user.lastName,
+      email : user.email,
+    }))});
+  }
+  catch(err){
+    return res.status(500).json({message: "Error while fetching users..." })
+  }
+})
 
 module.exports = router;
