@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/PayAndBank');
+  await mongoose.connect('mongodb+srv://shivamgupta23112003:iL5pp26sFzEwpXY5@cluster0.fdeuz7i.mongodb.net/PayAndBank');
 
   console.log('Connected to MongoDB');
 }

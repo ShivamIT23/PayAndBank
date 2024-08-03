@@ -109,6 +109,24 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.get("/login" , authMiddleware , async (req,res)=>{
+  if(req.userId){
+    const user = await User.findById(req.userId);
+    return res.json({
+      message : `Welcome ${user.firstName} ${user.lastName}`,
+      user : {
+        id : user._id,
+        firstName : user.firstName,
+        lastName : user.lastName,
+        email : user.email,
+      }
+    });
+  }
+  return res.status(404).json({
+    message : "User not found"
+  })
+})
+
 const updateBody = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
