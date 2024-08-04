@@ -1,4 +1,5 @@
 import { atom, selector, selectorFamily } from "recoil";
+import {getBalance } from "../../lib/helper";
 
 export const userAtom = atom({
   key: "userAtom",
@@ -48,6 +49,11 @@ export const messageState = atom({
     default: "",
 })
 
+export const filterState = atom({
+  key: "filterState",
+  default: "",
+})
+
 export const formDataState = selectorFamily({
   key: "formDataState",
   get:
@@ -59,6 +65,7 @@ export const formDataState = selectorFamily({
       const password = get(passwordState);
       const fullName = get(fullNameState);
       const message = get(messageState);
+      const filter = get(filterState);
       switch (label) {
         case "FirstName":
           return firstName;
@@ -70,6 +77,8 @@ export const formDataState = selectorFamily({
           return password;
         case "Full Name":
           return fullName;
+        case 'Search for user':
+          return filter;
         case 'Register' : 
         return {firstName, lastName, email, password};
         case 'Login':
@@ -96,6 +105,9 @@ export const formDataState = selectorFamily({
         case "Password":
           set(passwordState, newValue);
           break;
+        case "Search for user":
+          set(filterState, newValue);
+          break;
         case "Full Name": 
             set(fullNameState, newValue);
       }
@@ -106,4 +118,15 @@ export const formDataState = selectorFamily({
 export const tokenState = atom({
   key: 'tokenState',
   default: false,
+})
+
+
+export const balanceState = atom({
+  key: 'balanceState',
+  default: getBalance(),
+})
+
+export const otherUsersState = atom({
+  key: 'otherUsersState',
+  default: [],
 })

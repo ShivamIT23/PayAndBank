@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Input from "./Input";
 import RoundedIcon from "./RoundedIcon";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { filterState, otherUsersState } from "../Store/atom";
 
 export const Users = () => {
 
@@ -14,19 +16,23 @@ export const Users = () => {
         lastName: "Gupta",
         _id: 1
     }]);
-    const [filter , setFilter] = useState("")
 
-    // useEffect(()=>{
-    //     axios.get(`http://localhost:3000/api/v1/user/bulk?filter=${filter}`)
-    //     .then(res => setUsers(res.data.user))
-    // } ,[filter])
+    const filter = useRecoilValue(filterState)
+    const [otherUsers , setOtherUsers] = useRecoilState(otherUsersState);
+
+    useEffect(()=>{
+        axios.get(`${URL}/api/v1/user/bulk?filter=${filter}` ,{
+            
+        })
+        .then(res => setOtherUsers(res.data.user))
+    } ,[filter])
 
     return <>
-        <div className="m-5 w-auto h-3/6">
-        <Input placeholder={"Search for user"} type={"text"} name={"filter"} />
+        <div className="m-5 w-auto h-3/6 text-cyan-800">
+        <Input placeholder={"Search for user"}/>
       </div>
         <div>
-            {users.map(user => <User key={user._id} user={user} />)}
+            {otherUsers.map(user => <User key={user._id} user={user} />)}
         </div>
     </>
 }
