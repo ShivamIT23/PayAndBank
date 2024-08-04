@@ -48,7 +48,7 @@ router.post("/signup", async (req, res) => {
 
   const account = await Account.create({
     userId: userId,
-    balance : 1 + Math.floor(Math.random()*100000)
+    balance : 1 + Math.floor(Math.random()*1000000)
   })
 
   const token = jwt.sign(
@@ -112,6 +112,7 @@ router.post("/signin", async (req, res) => {
 router.get("/login" , authMiddleware , async (req,res)=>{
   if(req.userId){
     const user = await User.findById(req.userId);
+    if(user) {
     return res.json({
       message : `Welcome ${user.firstName} ${user.lastName}`,
       user : {
@@ -121,6 +122,10 @@ router.get("/login" , authMiddleware , async (req,res)=>{
         email : user.email,
       }
     });
+  } 
+  return res.status(400).json({
+    message : "User not found"
+  })
   }
   return res.status(404).json({
     message : "User not found"

@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Input from "../Input";
 
 export default function InputBox({label ,type  }) {
-
   return (
     <>
       <motion.p className="my-3 pl-2"

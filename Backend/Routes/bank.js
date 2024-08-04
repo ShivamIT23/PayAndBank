@@ -15,7 +15,7 @@ router.get("/",(req,res) => {
 router.get("/balance",authMiddleware ,async (req,res) => {
     try{
         const account = await Account.findOne({userId : req.userId});
-        res.json({balance : account.balance});
+        res.json({balance : (account.balance /100)});
     }
     catch(err){
         res.send("Bank server down .. please try after some time")
@@ -28,6 +28,7 @@ router.post("/transfer",authMiddleware , async (req,res) => {
 
         session.startTransaction();
         const {amount,receiverId} = req.body;
+        const newAmount = amount*100;
 
         const account = await Account.findOne({userId : req.userId}).session(session);
 
@@ -37,7 +38,7 @@ router.post("/transfer",authMiddleware , async (req,res) => {
             res.status(404).json({message : "Account not found"})
         }
         
-        if(account.balance < amount) {
+        if(account.balance < newAmount) {
             await session.abortTransaction();
             return res.status(404).json({
                 message: "Insufficient balance"
@@ -51,8 +52,8 @@ router.post("/transfer",authMiddleware , async (req,res) => {
             return res.status(404).json({message : "Receiver account not found"})
         }
 
-        await Account.updateOne({userId : req.userId} , {$inc : { balance : -amount}}).session(session);
-        await Account.updateOne({userId : receiverId} , {$inc : { balance : amount}}).session(session);
+        await Account.updateOne({userId : req.userId} , {$inc : { balance : -newAmount}}).session(session);
+        await Account.updateOne({userId : receiverId} , {$inc : { balance : newAmount}}).session(session);
 
         await session.commitTransaction();
         return res.json({

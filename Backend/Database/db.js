@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv')
+dotenv.config();
 
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb+srv://shivamgupta23112003:iL5pp26sFzEwpXY5@cluster0.fdeuz7i.mongodb.net/PayAndBank');
+  await mongoose.connect(process.env.MONGODB_URL);
 
   console.log('Connected to MongoDB');
 }

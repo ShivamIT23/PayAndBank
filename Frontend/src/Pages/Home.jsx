@@ -1,12 +1,16 @@
 import {motion} from "framer-motion";
 import { NavLink } from "react-router-dom";
+import { description1 } from "../../lib/data";
+import { useRecoilValue } from "recoil";
+import { isUserState } from "../Store/atom";
 
 export default function Home() {
 
+  const isUser = useRecoilValue(isUserState);
 
   return (
-    <div className="h-5/6 w-full ">
-      <div className="h-4/6 w-full flex flex-wrap justify-center content-center overflow-hidden">
+    <div className="h-5/6 w-full overflow-hidden ">
+      <div className="h-4/6 w-full flex flex-wrap justify-center content-center">
         <motion.h2 className="text-white transform-gpu text-center w-full text-4xl font-semibold leading-8 p-5 mt-20 hover:text-5xl " 
         initial={{x:0,y:0 , opacity:0.2 ,  scale:0.1}}
         animate={{ x:0 , y: 0 , scale : 1 , opacity : 1 }}
@@ -14,7 +18,7 @@ export default function Home() {
         >
             Welcome To The World's One Of The Trusted Website
         </motion.h2>
-        <NavLink to="/dashboard" className="h-16 w-1/6">
+        <NavLink to={isUser ? "/dashboard" : "/signin"} className="h-16 w-1/6">
           <motion.p  className=" h-full w-full text-center flex flex-col justify-center transform-gpu font-semibold text-lg text-olaola bg-slate-50 rounded-lg hover:bg-olaola hover:text-slate-50" 
         initial={{x:-10000 , y:0, scale:0.1 , opacity:0.2}}
         animate={{x:0 , y: 35 , scale:1 , opacity:1}}
@@ -29,7 +33,7 @@ export default function Home() {
       animate={{y:0 , opacity:1 , scale:1 , textAlign:"center"}}
       transition={{duration:2}}
       >
-      At PayAndBank, we understand the importance of a reliable and secure banking experience. Our platform offers a comprehensive suite of financial services designed to meet your everyday banking needs, all from the comfort of your home. Whether you’re managing your personal finances, making payments, or looking for investment opportunities, we’ve got you covered.
+      {description1}
       </motion.div>
     </div>
   );

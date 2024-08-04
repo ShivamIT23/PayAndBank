@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isUserState, settingAtom, userAtom } from "../Store/atom";
+import Profile from "./Profile";
 
 export default function Navbar() {
-  const linkInitial = { opacity: 0.3, y: -100 };
-  const linkAnimate = { opacity: 1, x: 0, y: 0 };
-  const [isUser , setIsUser] = useState(false);
 
   return (
     <div>
@@ -24,72 +23,59 @@ export default function Navbar() {
             PayAndBank
           </motion.h1>
         </NavLink>
-        <div className="flex justify-between w-2/5 m-2 mr-6">
-          <NavLink to="/about" className="text-xl">
-            <motion.button
-              initial={linkInitial}
-              animate={linkAnimate}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                mass: 3,
-                delay: 0.5,
-              }}
-            >
-              About
-            </motion.button>
-          </NavLink>
-          <NavLink to="/contact" className="text-xl">
-            <motion.button
-              initial={{ opacity: 0.3, y: -100 }}
-              animate={linkAnimate}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                mass: 3.6,
-                delay: 0.7,
-              }}
-            >
-              Contact
-            </motion.button>
-          </NavLink>
-          {isUser ? 
-          <motion.button className="text-xl text-bold h-auto text-olaola bg-white w-auto rounded-full">
-            S
-          </motion.button> : 
-          <>
-          <NavLink to="/signup" className="text-xl">
-            <motion.button
-              initial={linkInitial}
-              animate={linkAnimate}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                mass: 3,
-                delay: 0.1,
-              }}
-            >
-              Sign Up
-            </motion.button>
-          </NavLink>
-          <NavLink to="/signin" className="text-xl">
-            <motion.button
-              initial={linkInitial}
-              animate={linkAnimate}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                mass: 3,
-                delay: 0.3,
-              }}
-            >
-              Log In
-            </motion.button>
-          </NavLink>
-          </>
-          }
+        <div className="flex md:justify-between justify-end w-2/5 m-2 mr-6">
+          <NavLinkComponent label={"About"} to={"/about"} />
+          <NavLinkComponent label={"Contact"} to={"/contact"}/>
+          <ProfileButtonComponent />
         </div>
       </div>
     </div>
   );
+}
+
+function NavLinkComponent({label ,to}){
+
+  const linkInitial = {rotate : 360 , opacity: 0.3, y: -100 };
+  const linkAnimate = {rotate: 0, opacity: 1, x: 0, y: 0 };
+  const transition = {
+                type: "spring",
+                stiffness: 300,
+                mass: 3,
+                delay:0.1
+              }
+
+  return (
+    <NavLink to={to} className="text-xl hidden md:block">
+            <motion.button
+              initial={linkInitial}
+              animate={linkAnimate}
+              transition={transition}
+            >
+              {label}
+            </motion.button>
+          </NavLink>
+  )
+}
+
+function ProfileButtonComponent() {
+
+  const setSetting = useSetRecoilState(settingAtom);
+
+  const user = useRecoilValue(userAtom);
+  const isUser = useRecoilValue(isUserState)
+
+  return (
+    <>
+    {isUser ?
+            <button onClick={()=> setSetting(true)} className="text-xl text-bold w-auto">
+            <Profile user={user} />
+          </button>
+           : 
+          <>
+          <NavLinkComponent label={"Sign Up"} to={"/signup"} />
+          <NavLinkComponent label={"Log In"} to={"/signin"}/>
+          </>
+          }
+    </>
+  )
 }
