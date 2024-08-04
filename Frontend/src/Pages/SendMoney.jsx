@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { URL } from "../../lib/url";
 
 export default function SendMoney() {
 
@@ -39,7 +40,7 @@ export default function SendMoney() {
               <button onClick={()=>{
                 console.log(amount)
                 console.log(id)
-                axios.post("http://localhost:3000/api/v1/account/transfer" , {
+                axios.post(`${URL}/api/v1/account/transfer` , {
                   to : id,
                   amount : parseInt(amount)
                 } , {

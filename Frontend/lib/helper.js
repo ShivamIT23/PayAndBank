@@ -1,11 +1,12 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import { URL } from "./url";
 
 export async function onClickHandler(label, data, navigate, setToken) {
   if (label == "Register") {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/user/signup",
+        `${URL}/api/v1/user/signup`,
         {
           firstName: data.firstName,
           lastName: data.lastName,
@@ -29,7 +30,7 @@ export async function onClickHandler(label, data, navigate, setToken) {
   if (label == "Login") {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/user/signin",
+        `${URL}/api/v1/user/signin`,
         {
           email: data.email,
           password: data.password,
