@@ -9,11 +9,12 @@ import Home from './Pages/Home';
 import NavBar from "./Components/NavBar";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { settingAtom, tokenState, userAtom } from "./Store/atom";
 import { useEffect } from "react";
 import axios from "axios";
 import UserSetting from "./Components/UserSetting";
+import { URL } from "../lib/url";
 
 function App() {
   const [user , setUser] = useRecoilState(userAtom);
@@ -26,7 +27,7 @@ function App() {
     }
     else{
     setTimeout(()=>{
-      axios.get("http://localhost:3000/api/v1/user/login" ,{
+      axios.get(`${URL}/api/v1/user/login` ,{
       headers: {
         "Authorization": `${localStorage.getItem("token")}`
       }
