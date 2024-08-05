@@ -92,7 +92,6 @@ export async function getBalance() {
     return response.data.balance;
   } catch (err) {
     console.log(err);
-    toast.error("Issue when fetching balance");
     return 0;
   }
 }

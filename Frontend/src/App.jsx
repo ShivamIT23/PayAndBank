@@ -22,6 +22,7 @@ function App() {
 
   useEffect(() => {
     async function getUserProfile() {
+      await new Promise(resolve => setTimeout( resolve, 1000))
       await getProfile(setUser);
   }
   getUserProfile();
