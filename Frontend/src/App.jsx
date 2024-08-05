@@ -9,19 +9,22 @@ import Home from "./Pages/Home";
 import NavBar from "./Components/NavBar";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { settingAtom, tokenState, userAtom } from "./Store/atom";
 import { useEffect } from "react";
 import UserSetting from "./Components/UserSetting";
 import { getProfile } from "../lib/helper";
 
 function App() {
-  const [user, setUser] = useRecoilState(userAtom);
+  const setUser = useSetRecoilState(userAtom);
   const setting = useRecoilValue(settingAtom);
   const token = useRecoilValue(tokenState);
 
   useEffect(() => {
-    user ? null : async () => await getProfile(setUser); 
+    async function getUserProfile() {
+      await getProfile(setUser);
+  }
+  getUserProfile();
   }, [token]);
 
   return (

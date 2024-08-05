@@ -10,7 +10,7 @@ export default function Balance() {
     useEffect(()=>{
         const IntervalID = setInterval(async () => {
             setBalance(await getBalance());
-          }, 15000);
+          }, 5000);
           return () =>{
             clearInterval(IntervalID);
           }

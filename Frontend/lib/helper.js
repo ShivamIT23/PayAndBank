@@ -152,6 +152,7 @@ export async function transferHandler(amount, id, navigate) {
 
 export async function getProfile(setUser) {
   try {
+    console.log("hii")
     const response = await axios.get(`${URL}/api/v1/user/login`, {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
