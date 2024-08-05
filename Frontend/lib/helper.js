@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { credentials, URL } from "./url";
-const time = 3500;
+const time = 3000;
 
 export async function onClickHandler(label, data, navigate, setToken) {
   if (label == "Register") {
@@ -38,9 +38,9 @@ export async function onClickHandler(label, data, navigate, setToken) {
       console.log("hiii");
       localStorage.setItem("token", `Bearer ${response.data.token}`);
       console.log("hiii");
-      setToken(true);
       console.log("hiii");
       const toastId = toast.loading("Logging .....");
+      setToken(c => !c);
       setTimeout(() => {
         toast.dismiss(toastId);
         toast.success("User Logged In");

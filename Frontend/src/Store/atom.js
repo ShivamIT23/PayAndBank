@@ -71,7 +71,7 @@ export const sufficientAmountState = selector({
 
 export const tokenState = atom({
   key: 'tokenState',
-  default: false,
+  default: true,
 })
 
 
