@@ -1,12 +1,8 @@
-import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { URL } from "../../lib/url";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { amountState, sufficientAmountState } from "../Store/atom";
 import Heading from "../Components/Form/Heading";
 import SubHeading from "../Components/Form/SubHeading";
-import RoundedIcon from "../Components/RoundedIcon";
-import Input from "../Components/Input";
 import InputBox from "../Components/Form/InputBox";
 import Button from "../Components/Button";
 import { transferHandler } from "../../lib/helper";
