@@ -20,8 +20,6 @@ export const Users = () => {
         asyncUseEffect();
     } ,[filter])
 
-    console.log(otherUsers)
-
     return <>
         <div className="m-5 w-auto h-3/6 text-cyan-800">
         <Input placeholder={"Search for user"}/>

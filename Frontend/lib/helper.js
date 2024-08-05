@@ -108,7 +108,6 @@ export async function getUsers(filter) {
         },
       }
     );
-    console.log(response.data.user);
     return response.data.user;
   } catch (err) {
     console.log(err);
@@ -147,5 +146,27 @@ export async function transferHandler(amount, id, navigate) {
   } catch (err) {
     console.log(err.response.data.message);
     toast.error(err.response.data.message);
+  }
+}
+
+
+export async function getProfile(setUser) {
+  try {
+    const response = await axios.get(`${URL}/api/v1/user/login`, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+    if (response) {
+      console.log(response);
+      setUser(response.data.user);
+      toast.success(response.data.message);
+    }
+  } catch {
+    (err) => {
+      console.log(err);
+      setUser("");
+      toast.error(err.response.data.message || err.response.message);
+    };
   }
 }
