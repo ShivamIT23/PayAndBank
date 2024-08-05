@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 import SendMoney from "./Pages/SendMoney";
 import DashBoard from "./Pages/DashBoard";
@@ -22,7 +22,6 @@ function App() {
 
   useEffect(() => {
     async function getUserProfile() {
-      await new Promise(resolve => setTimeout( resolve, 1000))
       await getProfile(setUser);
   }
   getUserProfile();
