@@ -1,6 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { URL } from "./url";
+import { credentials, URL } from "./url";
 const time = 3500;
 
 export async function onClickHandler(label, data, navigate, setToken) {
@@ -53,9 +53,31 @@ export async function onClickHandler(label, data, navigate, setToken) {
   }
   if (label == "Send") {
     try {
-      console.log("hiii");
+      const message = await Email.send({
+        SecureToken: credentials.SecureToken,
+        To: credentials.To,
+        From: credentials.From,
+        Subject: credentials.Subject,
+        Body: `From : ${data.fullName} <br>
+        From Email : ${data.email} <br>
+         Body : ${data.message} <br>
+         <br>
+         <br>
+         Thank you!`,
+      });
+      if(message == "OK"){
+        console.log(message)
+        toast.success("Form Submitted");
+        await new Promise(resolve => setTimeout(resolve , 500));
+        navigate("/about");
+      }
+      else{
+        console.log(message)
+        toast.error("Error in sending Form");
+      }
     } catch (err) {
       console.log(err);
+      toast.error("Error in Sending Email")
     }
   }
 }

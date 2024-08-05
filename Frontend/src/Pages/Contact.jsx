@@ -1,14 +1,13 @@
 import Heading from "../Components/Form/Heading";
 import InputBox from "../Components/Form/InputBox";
 import Question from "../Components/Form/Question";
-import Password from "../Components/Form/Password";
 import SubHeading from "../Components/Form/SubHeading";
 import ButtonForm from "../Components/Form/ButtonForm";
 import TextBox from "../Components/Form/TextBox";
 
 export default function Contact() {
   return (
-    <div className="h-full lg:h-5/6 xl:h-4/6 m-6 flex justify-center">
+    <div className="h-full pt-28 lg:h-5/6 xl:h-4/6 m-6 flex justify-center">
       <div className="h-full w-5/6 flex flex-wrap content-center justify-center">
         <div className="h-auto w-full py-10 bg-slate-50 p-4 text-cyan-800 text-lg md:text-3xl sm:text-xl">
           <Heading
