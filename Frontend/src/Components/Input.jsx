@@ -8,7 +8,6 @@ export default function Input({type , placeholder }) {
 
   
   const [data ,setData] = useRecoilState(formDataState(placeholder));
-  console.log(data)
   return (
     <>
     <motion.input

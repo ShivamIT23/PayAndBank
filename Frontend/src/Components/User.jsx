@@ -1,38 +1,33 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Button from "./Button"
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Input from "./Input";
 import RoundedIcon from "./RoundedIcon";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { filterState, otherUsersState } from "../Store/atom";
+import { getUsers } from "../../lib/helper";
 
 export const Users = () => {
 
-
-    // Replace with backend call
-    const [users, setUsers] = useState([{
-        firstName: "Shivam",
-        lastName: "Gupta",
-        _id: 1
-    }]);
 
     const filter = useRecoilValue(filterState)
     const [otherUsers , setOtherUsers] = useRecoilState(otherUsersState);
 
     useEffect(()=>{
-        axios.get(`${URL}/api/v1/user/bulk?filter=${filter}` ,{
-            
-        })
-        .then(res => setOtherUsers(res.data.user))
+        async function asyncUseEffect() {
+            setOtherUsers(await getUsers(filter));
+        }
+        asyncUseEffect();
     } ,[filter])
+
+    console.log(otherUsers)
 
     return <>
         <div className="m-5 w-auto h-3/6 text-cyan-800">
         <Input placeholder={"Search for user"}/>
       </div>
         <div>
-            {otherUsers.map(user => <User key={user._id} user={user} />)}
+            {otherUsers.map(user => <User key={user.id} user={user} />)}
         </div>
     </>
 }
@@ -51,7 +46,7 @@ function User({user}) {
 
         <div className="flex flex-col justify-center h-ful">
             <Button onClick={()=>
-                navigate(`/send?id=${user._id}&name=${user.firstName}`)
+                navigate(`/send?id=${user.id}&name=${user.firstName + " " + user.lastName}`)
             } label={"Send Money"} />
         </div>
     </div>

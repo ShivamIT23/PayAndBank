@@ -1,56 +1,51 @@
 import axios from "axios";
-import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { URL } from "../../lib/url";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { amountState, sufficientAmountState } from "../Store/atom";
+import Heading from "../Components/Form/Heading";
+import SubHeading from "../Components/Form/SubHeading";
+import RoundedIcon from "../Components/RoundedIcon";
+import Input from "../Components/Input";
+import InputBox from "../Components/Form/InputBox";
+import Button from "../Components/Button";
+import { transferHandler } from "../../lib/helper";
+import Question from "../Components/Form/Question";
+import { useEffect } from "react";
 
 export default function SendMoney() {
 
   const [searchParams] = useSearchParams();
   const name = searchParams.get("name");
   const id = searchParams.get("id");
-  const [amount , setAmount] = useState(0);
+  const [amount , setAmount] = useRecoilState(amountState);
+  const sufficientAmount = useRecoilValue(sufficientAmountState);
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    setAmount(0);
+  },[])
 
   return (
     <div className="flex justify-center h-screen bg-gray-100">
       <div className="h-full flex flex-col justify-center">
-        <div className="border h-min text-card-foreground max-w-md p-4 space-y-8 w-96 bg-white shadow-lg rounded-lg">
+        <div className="border h-min text-card-foreground max-w-md p-4 space-y-8 w-96 bg-slate-50 shadow-lg rounded-lg">
           <div className="flex flex-col space-y-1.5 p-6">
-            <h2 className="text-3xl font-bold text-center">Send Money</h2>
+            <Heading heading={"Send Money"} />
           </div>
           <div className="p-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center"></div>
-              <h3 className="text-2xl font-semibold">{name}</h3>
-            </div>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  htmlFor="amount"
-                >
-                  Amount (in Rs)
-                </label>
-                <input onChange={(e)=>setAmount(e.target.value)}
-                  type="number"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  id="amount"
-                  placeholder="Enter amount"
-                />
+            <div className="flex items-center space-x-2">
+              <div className="text-green-200 ">
+                  <SubHeading paragraph={"To : "} />
               </div>
-              <button onClick={()=>{
-                console.log(amount)
-                console.log(id)
-                axios.post(`${URL}/api/v1/account/transfer` , {
-                  to : id,
-                  amount : parseInt(amount)
-                } , {
-                  headers : {
-                    "Authorization" : localStorage.getItem("token")
-                    }
-                })
-              }} className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
-                Initiate Transfer
-              </button>
+              <SubHeading paragraph={name} />
+            </div>
+            <div className="space-y-4  mt-10">
+              <div className="space-y-2">
+                <InputBox label={"Amount (in Rs)"} placeholder={"Enter amount"} />
+              </div>
+              <Button label={"Initiate Transfer"} onClick={() => transferHandler(amount,id,navigate)}/>
+                {sufficientAmount ? null : <Question label={"Insufficient Balance?"} to={"/dashboard"} toLabel={"CheckBalance"} textSize={'text-lg'} />}
             </div>
           </div>
         </div>

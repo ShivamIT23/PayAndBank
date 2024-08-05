@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Input from "../Input";
 
-export default function InputBox({label ,type  }) {
+export default function InputBox({label ,type ,placeholder }) {
   return (
     <>
       <motion.p className="my-3 pl-2"
@@ -9,7 +9,7 @@ export default function InputBox({label ,type  }) {
       animate={{x:0 , opacity:1 , scale:1 }}
       transition={{duration:0.5 , delay:0.5}}
       >{label} : </motion.p>
-      <Input placeholder={label} type={type}/>
+      <Input placeholder={placeholder ? placeholder : label} type={type?type : "text"}/>
     </>
   );
 }
