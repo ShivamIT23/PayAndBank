@@ -30,6 +30,7 @@ export async function onClickHandler(label, data, navigate, setToken) {
   }
   if (label == "Login") {
     try {
+      const toastId = toast.loading("Logging .....");
       const response = await axios.post(`${URL}/api/v1/user/signin`, {
         email: data.email,
         password: data.password,
@@ -39,7 +40,6 @@ export async function onClickHandler(label, data, navigate, setToken) {
       localStorage.setItem("token", `Bearer ${response.data.token}`);
       console.log("hiii");
       console.log("hiii");
-      const toastId = toast.loading("Logging .....");
       setToken(c => !c);
       setTimeout(() => {
         toast.dismiss(toastId);
