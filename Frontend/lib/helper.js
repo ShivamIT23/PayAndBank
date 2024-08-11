@@ -49,6 +49,7 @@ export async function onClickHandler(label, data, navigate, setToken) {
       console.log("hiii");
     } catch (error) {
       toast.dismiss(toastId);
+      toast.error("Error While Logging In");
       console.log(error.response.data);
     }
   }
