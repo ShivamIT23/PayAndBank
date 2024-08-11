@@ -86,7 +86,7 @@ router.post("/signin", async (req, res) => {
       return res.status(400).json({ message: "Email not found" });
     }
 
-    const result = await bcrypt.compareSync(req.body.password, existingUser.password);
+    const result = await bcrypt.compare(req.body.password, existingUser.password);
 
     if (!result) {
       return res.status(400).json({ message: "Incorrect Password" });
