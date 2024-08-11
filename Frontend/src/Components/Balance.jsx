@@ -9,9 +9,13 @@ export default function Balance() {
     const [balance , setBalance] = useRecoilState(balanceState);
 
     useEffect(()=>{
+        getBalance().then(res => {
+            setBalance(res);
+            (res == 0) ? toast.error("Issue when fetching balance") : null
+        }); 
         const IntervalID = setInterval(async () => {
           const newBalance = await getBalance();
-            setBalance(await getBalance());
+            setBalance(newBalance);
             (newBalance == 0) ? toast.error("Issue when fetching balance") : null
           }, 5000);
           return () =>{
