@@ -23,19 +23,24 @@ const signupSchema = z.object({
 
 router.post("/signup", async (req, res) => {
   const { success } = signupSchema.safeParse(req.body);
+  console.log("hii");
   if (!success) {
     return res.status(400).json({ message: "Incorrect Inputs" });
   }
+  console.log("hii");
 
   const existingUser = await User.findOne({
     email: req.body.email,
   });
+  console.log("hii");
 
   if (existingUser) {
     return res.status(400).json({ message: "Email already taken" });
   }
+  console.log("hii");
 
   const hashedPassword = await bcrypt.hashSync(req.body.password, 12);
+  console.log("hii");
 
   const user = await User.create({
     firstName: req.body.firstName,
@@ -43,6 +48,7 @@ router.post("/signup", async (req, res) => {
     email: req.body.email,
     password: hashedPassword,
   });
+  console.log("hii");
 
   const userId = user._id;
 
@@ -50,6 +56,7 @@ router.post("/signup", async (req, res) => {
     userId: userId,
     balance : 1 + Math.floor(Math.random()*1000000)
   })
+  console.log("hii");
 
   const token = jwt.sign(
     {
@@ -57,6 +64,7 @@ router.post("/signup", async (req, res) => {
     },
     JWT_Secret
   );
+  console.log("hii");
 
   return res.json({
     message: "User created successfully",
