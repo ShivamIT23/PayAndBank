@@ -6,7 +6,6 @@
   "scripts": {
     "test": "nodemon api/index.js",
     "start": "node api/index.js",
-    "vercel-build": "echo hello"
   },
   "repository": {
     "type": "git",
