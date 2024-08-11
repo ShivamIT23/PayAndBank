@@ -35,7 +35,7 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "Email already taken" });
   }
 
-  const hashedPassword = bcrypt.hashSync(req.body.password, 12);
+  const hashedPassword = await bcrypt.hashSync(req.body.password, 12);
 
   const user = await User.create({
     firstName: req.body.firstName,
@@ -86,7 +86,7 @@ router.post("/signin", async (req, res) => {
       return res.status(400).json({ message: "Email not found" });
     }
 
-    const result = bcrypt.compareSync(req.body.password, existingUser.password);
+    const result = await bcrypt.compareSync(req.body.password, existingUser.password);
 
     if (!result) {
       return res.status(400).json({ message: "Incorrect Password" });
