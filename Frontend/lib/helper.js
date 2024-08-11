@@ -29,8 +29,8 @@ export async function onClickHandler(label, data, navigate, setToken) {
     }
   }
   if (label == "Login") {
-    try {
       const toastId = toast.loading("Logging .....");
+    try {
       const response = await axios.post(`${URL}/api/v1/user/signin`, {
         email: data.email,
         password: data.password,
@@ -48,6 +48,7 @@ export async function onClickHandler(label, data, navigate, setToken) {
       }, time);
       console.log("hiii");
     } catch (error) {
+      toast.dismiss(toastId);
       console.log(error.response.data);
     }
   }
