@@ -5,8 +5,15 @@ const cors = require("cors");
 
 const port = process.env.PORT || 3000;
 
+const corsOptions = {
+  origin: '*', // or specify a specific origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 
